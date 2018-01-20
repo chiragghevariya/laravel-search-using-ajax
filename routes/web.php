@@ -21,18 +21,7 @@ Route::get('master',function (){
 });
 
 Route::resource('information','InformationController');
-
-Route::get('ajax','AjaxController@index');
-Route::post('ajax','AjaxController@create');
-Route::post('delete','AjaxController@delete');
-Route::post('update','AjaxController@update');
-
-
-Route::get('contact','ContactController@index');
-Route::post('contact','ContactController@add');
-
-
-
+Route::post('/information/search','InformationController@search');
 
 
 

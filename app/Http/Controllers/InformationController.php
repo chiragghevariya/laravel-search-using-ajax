@@ -102,4 +102,27 @@ class InformationController extends Controller
         session()->flash('msg-delete','one iten deleted successfull');
         return redirect()->route('information.index');
     }
+    public function search(Request $r)
+    {
+        
+        $input=$r->all();
+
+        $infodata =Information::where("name","like",'%'.$input['name'].'%')->get();
+        $largeHtml ="";
+         if(count($infodata)>0){
+
+            foreach($infodata as $info){
+            $largeHtml.='<pre><div id="newdata">
+                          <tr><td>'.$info->id.'</td><td>'.$info->name.'</td><td>'.$info->description.'</td><td>Edit</td><td>Delete</td>
+                          </tr>
+                      </div></pre>';
+            }
+        }else{
+            $largeHtml = '<div>No data found</div>';
+        }
+    
+        $data['large']=$largeHtml;
+
+        echo json_encode($data);
+    }
 }

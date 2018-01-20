@@ -43,9 +43,14 @@
         </div>
 
 
-        <div>
+        <div class="row">
 
-            <a href="{{Route('information.create')}}" class="pull-right btn btn-success" style="position:static;overflow: hidden">create Info</a>
+            <div class="col-md-5">
+                <input type="text" name="name" id="name" class="form-control redius" placeholder="search ....">
+        
+            </div>
+
+             <a href="{{Route('information.create')}}" class="pull-right btn btn-success" style="position:static;overflow: hidden">create Info</a>
 
         </div>
 
@@ -61,25 +66,30 @@
                 <tr>
 
             </thead>
-            @foreach($infodata as $info)
-            <tr>
-                <td>{{$info->id}}</td>
-                <td>{{$info->name}}</td>
-                <td>{{$info->description}}</td>
-                <td >  <a href="{{route('information.edit',['id'=>$info->id])}}" class="btn btn-success">Edit</a></td>
-                <td>
-                    <form method="post" action="{{route('information.destroy',['id'=>$info->id])}}">
-                        {{csrf_field()}}
-                        {{ method_field('delete') }}
+            <div id="largeddsf">
+                @foreach($infodata as $info)
+                <div id="newdata">
+                    <tr>
+                        <td>{{$info->id}}</td>
+                        <td>{{$info->name}}</td>
+                        <td>{{$info->description}}</td>
+                        <td >  <a href="{{route('information.edit',['id'=>$info->id])}}" class="btn btn-success">Edit</a></td>
+                        <td>
+                            <form method="post" action="{{route('information.destroy',['id'=>$info->id])}}">
+                                {{csrf_field()}}
+                                {{ method_field('delete') }}
 
-                        <input type="submit" class="btn btn-danger" value="delete">
-                    </form>
+                                <input type="submit" class="btn btn-danger" value="delete">
+                            </form>
 
-                </td>
+                        </td>
 
-            </tr>
+                    </tr>
+                </div>
 
                 @endforeach
+            </div>
+            
 
         </table>
 
@@ -94,6 +104,30 @@
             });
         }, 500);
 
+
     </script>
+    <script type="text/javascript">
+
+        $(document).ready(function(){
+
+            $('input#name').keyup(function() {
+               
+               var v_name=$(this).val();
+                
+                $.ajax({
+                  type: "POST",
+                  url: "/information/search",
+                  data: {'name':v_name,'_token':$('input[name=_token]').val()},
+                  success: function( data ) {
+                    var response =JSON.parse( data );
+                        $( '#largeddsf' ).html( response.large );
+                    }
+                });
+
+            });
+
+        });
+    </script>
+
 
  @endsection
